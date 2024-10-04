@@ -27,37 +27,36 @@ class SafetyNode(Node):
         """
 
         # Subscribe to LaserScan for distance to obstacles
-self.scan_subscriber = self.create_subscription(
-    LaserScan,
-    '/scan',
-    self.scan_callback,
-    10
-)
+    self.scan_subscriber = self.create_subscription(
+        LaserScan,
+        '/scan',
+        self.scan_callback,
+        10
+    )
 
-# Subscribe to Odometry to get current speed
-self.odom_subscriber = self.create_subscription(
-    Odometry,
-    '/ego_racecar/odom',
-    self.odom_callback,
-    10
-)
+    # Subscribe to Odometry to get current speed
+    self.odom_subscriber = self.create_subscription(
+        Odometry,
+        '/ego_racecar/odom',
+        self.odom_callback,
+        10
+    )
 
-# Publisher to publish the braking message if needed
-self.drive_publisher = self.create_publisher(
-    AckermannDriveStamped,
-    '/drive',
-    10
-)
+    # Publisher to publish the braking message if needed
+    self.drive_publisher = self.create_publisher(
+        AckermannDriveStamped,
+        '/drive',
+        10
+    )
 
-        self.speed = 0.
-        # TODO: create ROS subscribers and publishers.
+    self.speed = 0.
 
     def odom_callback(self, odom_msg):
-        # TODO: update current speed
-    self.speed = odom_msg.twist.twist.linear.x
+            # TODO: update current speed
+        self.speed = odom_msg.twist.twist.linear.x
 
-   def scan_callback(self, scan_msg):
-    min_ttc = float('inf')  # Track the minimum iTTC
+    def scan_callback(self, scan_msg):
+        min_ttc = float('inf')  # Track the minimum iTTC
     
     for i, r in enumerate(scan_msg.ranges):
         if np.isinf(r) or np.isnan(r):
